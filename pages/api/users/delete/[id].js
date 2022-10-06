@@ -1,28 +1,22 @@
 import prisma from "../../../../lib/prisma";
 export default async function handler(req, res) {
-  const { id } = req.query;
-
   const { method } = req;
-
+  const { id } = req.query;
   switch (method) {
-    case "GET":
+    case "DELETE":
       try {
-        const product = await prisma.product.findUnique({
+        const user = await prisma.users.delete({
           where: {
             id: Number(id),
           },
         });
-
         res.status(200);
-
         res.json({
-          data: product,
-          message: `Success get data ${product.id}`,
+          message: "User has been deleted successfully!",
         });
       } catch (error) {
-        console.log(error);
+        res.status(400).end();
       }
-
       break;
     default:
       res.status(405).end();
