@@ -15,4 +15,22 @@ model Product {
   name      String
   price     Int
   createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Users {
+  id        Int      @id @default(autoincrement())
+  name      String
+  sex       String
+  address   String
+  phone     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Categories {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
