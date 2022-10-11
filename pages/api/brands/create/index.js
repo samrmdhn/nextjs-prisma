@@ -1,33 +1,24 @@
 import prisma from "../../../../lib/prisma";
 export default async function handler(req, res) {
   const { method } = req;
-
-  const { name, price, brId } = req.body;
+  const { name } = req.body;
 
   switch (method) {
     case "POST":
       try {
-        const product = await prisma.product.create({
+        const brands = await prisma.brands.create({
           data: {
             name: name,
-            price: price,
-            brands: {
-              connect: {
-                id: brId,
-              },
-            },
           },
         });
-        res.status(200);
+        res.status(201);
         res.json({
-          data: product,
-          message: "Success Created",
+          data: brands,
+          message: `Brands ${brands.name} successfully created!`,
         });
       } catch (error) {
-        console.log(error);
-        res.status(400);
+        res.status(400).end();
       }
-
       break;
     default:
       res.status(405).end();

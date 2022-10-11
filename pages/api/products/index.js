@@ -1,11 +1,18 @@
-import prisma from "../../../lib/prisma";
-export default async function handler(req, res) {
+import prisma from "../../../lib/prisma";export default async function handler(req, res) {
   const { method } = req;
 
   switch (method) {
     case "GET":
       try {
-        const product = await prisma.product.findMany();
+        const product = await prisma.product.findMany({
+          include: {
+            brands: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        });
         res.status(200);
         res.json({
           data: product,
