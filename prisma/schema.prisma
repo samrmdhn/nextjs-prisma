@@ -16,6 +16,8 @@ model Product {
   price     Int
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+  brands    Brands?  @relation(fields: [brandsId], references: [id])
+  brandsId  Int?
 }
 
 model Users {
@@ -33,4 +35,12 @@ model Categories {
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Brands {
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+  product   Product[]
 }

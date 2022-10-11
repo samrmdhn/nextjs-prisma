@@ -16,6 +16,7 @@ export default function Product() {
         return response;
       });
       setResponse(res.data.message);
+      console.log(res);
       setData(res.data.data);
       setLoading("Success get data");
     } catch (error) {
@@ -95,7 +96,7 @@ export default function Product() {
         return (
           <div key={index}>
             <h5>
-              {dt.name} {dt.price}
+              {dt.name} {dt.price} {dt.brands.name}
               <button onClick={() => Router.push(`products/${dt.id}`)}>
                 ✏️
               </button>
