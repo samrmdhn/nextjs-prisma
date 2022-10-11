@@ -1,113 +1,11 @@
-import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
-
-import { useEffect, useState } from "react";
-import Router from "next/router";
-import axios from "axios";
+import React from "react";
+import Navbar from "../components/Navbar";
 
 export default function Home() {
-  const [data, setData] = useState([]);
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [response, setResponse] = useState("");
-  const [loading, setLoading] = useState("");
-
-  const getData = async () => {
-    try {
-      setLoading("Loading...");
-      const res = await axios.get("/api/product").then(function (response) {
-        return response;
-      });
-      setResponse(res.data.message);
-      setData(res.data.data);
-      setLoading("Success get data");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const formHandler = async (e) => {
-    const datas = {
-      name,
-      price,
-    };
-    e.preventDefault();
-    try {
-      const req = await axios
-        .post("/api/product/create", datas)
-        .then(function (response) {
-          return response;
-        });
-
-      setResponse(req.data.message);
-
-      const cloneData = [...data];
-
-      cloneData.push(req.data.data);
-      setData(cloneData);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
-
-  const deleteHandler = async (dataId) => {
-    try {
-      const res = await axios
-        .delete(`/api/product/delete/${dataId}`)
-        .then(function (response) {
-          return response;
-        });
-
-      setResponse(res.data.message);
-
-      const cloneData = [...data];
-
-      const filteredData = cloneData.filter((dta) => {
-        return dta.id != dataId;
-      });
-
-      setData(filteredData);
-    } catch (error) {
-      setResponse(error.message);
-    }
-  };
-
   return (
     <div style={{ padding: 50 }}>
-      <form onSubmit={formHandler}>
-        <input
-          type="text"
-          placeholder="Machiato"
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="5000"
-          onChange={(e) => setPrice(parseInt(e.target.value))}
-        />
-        <button type="submit">Submit</button>
-      </form>
-
-      {response}
-
-      {data.map((dt, index) => {
-        return (
-          <div key={index}>
-            <h5>
-              {dt.name} {dt.price}
-              <button onClick={() => Router.push(`product/${dt.id}`)}>
-                ✏️
-              </button>
-              <button onClick={() => deleteHandler(dt.id)}>🗑️</button>
-            </h5>
-          </div>
-        );
-      })}
+      <h3>Home</h3>
+      <Navbar />
     </div>
   );
 }

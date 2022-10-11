@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";import axios from "axios";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Router, { useRouter } from "next/router";
 
 export default function ProductId() {
   const router = useRouter();
   const { id } = router.query;
+
   const [data, setData] = useState({});
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -11,7 +13,7 @@ export default function ProductId() {
 
   const getData = async () => {
     const res = await axios
-      .get(`/api/product/find/${id}`)
+      .get(`/api/products/find/${id}`)
       .then(function (response) {
         return response;
       });
@@ -20,26 +22,20 @@ export default function ProductId() {
   };
 
   const submitHandler = async (e) => {
-    e.preventDefault();
-
     try {
+      e.preventDefault();
       const datas = {
         name: name,
         price: price,
       };
 
-      if (name == "" || price == "") {
-        setNotification("Semua input harus diupdate");
-        return;
-      }
-
       const res = await axios
-        .put(`/api/product/update/${id}`, datas)
+        .put(`/api/products/update/${id}`, datas)
         .then(function (response) {
           return response;
         });
 
-      Router.push("/");
+      Router.push("/products");
     } catch (error) {
       setNotification(error.message);
     }
