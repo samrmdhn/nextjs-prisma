@@ -12,13 +12,19 @@ export default async function handler(req, res) {
             id: Number(id),
           },
         });
+
+        const product = await prisma.product.findMany({
+          where: {
+            brandsId: brands.id,
+          },
+        });
+
         res.status(200);
         res.json({
-          data: brands,
-          message: `Brands ${brands.name} found successfully!`,
+          data: product,
+          message: `Brands found successfully!`,
         });
       } catch (error) {
-        console.log(error);
         res.status(400).end();
       }
       break;

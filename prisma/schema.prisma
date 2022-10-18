@@ -11,13 +11,14 @@ datasource db {
 }
 
 model Product {
-  id        Int      @id @default(autoincrement())
-  name      String
-  price     Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  brands    Brands?  @relation(fields: [brandsId], references: [id])
-  brandsId  Int?
+  id         Int          @id @default(autoincrement())
+  name       String
+  price      Int
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @default(now()) @updatedAt
+  brands     Brands?      @relation(fields: [brandsId], references: [id])
+  brandsId   Int?
+  categories Categories[]
 }
 
 model Users {
@@ -31,10 +32,11 @@ model Users {
 }
 
 model Categories {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+  products  Product[]
 }
 
 model Brands {

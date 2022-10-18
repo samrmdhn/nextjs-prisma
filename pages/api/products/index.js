@@ -1,4 +1,5 @@
-import prisma from "../../../lib/prisma";export default async function handler(req, res) {
+import prisma from "../../../lib/prisma";
+export default async function handler(req, res) {
   const { method } = req;
 
   switch (method) {
@@ -8,6 +9,13 @@ import prisma from "../../../lib/prisma";export default async function handler(r
           include: {
             brands: {
               select: {
+                id: true,
+                name: true,
+              },
+            },
+            categories: {
+              select: {
+                id: true,
                 name: true,
               },
             },
