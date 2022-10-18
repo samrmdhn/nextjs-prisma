@@ -4,6 +4,11 @@ import axios from "axios";
 
 export default function Product() {
   const [data, setData] = useState([]);
+
+  const [brands, setBrands] = useState([]);
+  const [brandId, setBrandId] = useState("");
+  const [categoriesId, setCategoriesId] = useState("");
+  const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [response, setResponse] = useState("");
@@ -12,12 +17,39 @@ export default function Product() {
   const getData = async () => {
     try {
       setLoading("Loading...");
-      const res = await axios.get("/api/products").then(function (response) {
+      const res = await axios.get(`/api/products`).then(function (response) {
         return response;
       });
-      setResponse(res.data.message);
+
       console.log(res);
+
+      const res2 = await axios.get(`/api/categories`).then(function (response) {
+        return response;
+      });
+
+      const res3 = await axios.get(`/api/brands`).then(function (response) {
+        return response;
+      });
+
+      const cloneCategories = [...res2.data.data];
+      cloneCategories.unshift({
+        id: "0",
+        name: "Select Categories",
+      });
+
+      const cloneCategories2 = [...res3.data.data];
+      cloneCategories2.unshift({
+        id: "0",
+        name: "Select Brands",
+      });
+
+      setCategories(cloneCategories);
+      setBrands(cloneCategories2);
+
+      setResponse(res.data.message);
+
       setData(res.data.data);
+      // setCategories(res2.data.data);
       setLoading("Success get data");
     } catch (error) {
       console.log(error);
@@ -28,20 +60,24 @@ export default function Product() {
     const datas = {
       name,
       price,
+      categoriesId,
+      brandId,
     };
     e.preventDefault();
+    console.log(datas);
+
     try {
-      const req = await axios
+      const res = await axios
         .post("/api/products/create", datas)
         .then(function (response) {
           return response;
         });
 
-      setResponse(req.data.message);
+      setResponse(res.data.message);
 
       const cloneData = [...data];
 
-      cloneData.push(req.data.data);
+      cloneData.push(res.data.data);
       setData(cloneData);
     } catch (error) {
       console.log(error);
@@ -74,6 +110,14 @@ export default function Product() {
     }
   };
 
+  const handleChange = (e) => {
+    setCategoriesId(e.target.value);
+  };
+
+  const handleChange2 = (e) => {
+    setBrandId(e.target.value);
+  };
+
   return (
     <div style={{ padding: 50 }}>
       <form onSubmit={formHandler}>
@@ -87,6 +131,32 @@ export default function Product() {
           placeholder="5000"
           onChange={(e) => setPrice(parseInt(e.target.value))}
         />
+
+        <select onChange={handleChange} value={categoriesId}>
+          {categories.map((ctr, index) => {
+            return (
+              <>
+                <option
+                  key={index}
+                  value={ctr.id}
+                  name={ctr.id}
+                  label={ctr.name}
+                />
+              </>
+            );
+          })}
+        </select>
+
+        <select onChange={handleChange2} value={brandId}>
+          {brands.map((brd, index) => {
+            return (
+              <>
+                <option key={index} label={brd.name} value={brd.id} />
+              </>
+            );
+          })}
+        </select>
+
         <button type="submit">Submit</button>
       </form>
 

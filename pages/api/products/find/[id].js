@@ -11,7 +11,15 @@ export default async function handler(req, res) {
           where: {
             id: Number(id),
           },
+          include: { categories: true },
         });
+        /*
+        const product = await prisma.product.findUnique({
+          where: {
+            id: Number(id),
+          },
+        });
+        */
 
         res.status(200);
 
