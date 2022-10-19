@@ -7,8 +7,9 @@ export default function Product() {
 
   const [brands, setBrands] = useState([]);
   const [brandId, setBrandId] = useState("");
-  const [categoriesId, setCategoriesId] = useState("");
   const [categories, setCategories] = useState([]);
+  const [categoriesId1, setCategoriesId1] = useState("");
+  const [categoriesId2, setCategoriesId2] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [response, setResponse] = useState("");
@@ -37,14 +38,21 @@ export default function Product() {
         name: "Select Categories",
       });
 
-      const cloneCategories2 = [...res3.data.data];
+      const cloneCategories2 = [...res2.data.data];
       cloneCategories2.unshift({
+        id: "0",
+        name: "Select Categories",
+      });
+
+      const cloneBrands = [...res3.data.data];
+      cloneBrands.unshift({
         id: "0",
         name: "Select Brands",
       });
 
       setCategories(cloneCategories);
-      setBrands(cloneCategories2);
+
+      setBrands(cloneBrands);
 
       setResponse(res.data.message);
 
@@ -60,7 +68,8 @@ export default function Product() {
     const datas = {
       name,
       price,
-      categoriesId,
+      categoriesId1,
+      categoriesId2,
       brandId,
     };
     e.preventDefault();
@@ -111,11 +120,15 @@ export default function Product() {
   };
 
   const handleChange = (e) => {
-    setCategoriesId(e.target.value);
+    setCategoriesId1(e.target.value);
   };
 
   const handleChange2 = (e) => {
     setBrandId(e.target.value);
+  };
+
+  const handleChange3 = (e) => {
+    setCategoriesId2(e.target.value);
   };
 
   return (
@@ -132,16 +145,38 @@ export default function Product() {
           onChange={(e) => setPrice(parseInt(e.target.value))}
         />
 
-        <select onChange={handleChange} value={categoriesId}>
+        <select onChange={handleChange} value={categoriesId1}>
           {categories.map((ctr, index) => {
             return (
               <>
-                <option
-                  key={index}
-                  value={ctr.id}
-                  name={ctr.id}
-                  label={ctr.name}
-                />
+                {categoriesId2 == ctr.id ? (
+                  <>{/* */}</>
+                ) : (
+                  <>
+                    <option
+                      key={index}
+                      value={ctr.id}
+                      name={ctr.id}
+                      label={ctr.name}
+                    />
+                  </>
+                )}
+              </>
+            );
+          })}
+        </select>
+
+        <select onChange={handleChange3} value={categoriesId2}>
+          {categories.map((ctr, index) => {
+            return (
+              <>
+                {categoriesId1 == ctr.id ? (
+                  <>{/**/}</>
+                ) : (
+                  <>
+                    <option label={ctr.name} value={ctr.id} key={index} />
+                  </>
+                )}
               </>
             );
           })}
